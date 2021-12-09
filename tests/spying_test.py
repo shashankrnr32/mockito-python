@@ -139,11 +139,12 @@ class TestSpy2:
     def testEnsureStubbedResponseForSpecificInvocation(self):
         dummy = Dummy()
         spy2(dummy.return_args)
-        when(dummy).return_args('foo').thenReturn('fox')
+        when(dummy).return_args('foo').thenReturn('fox').thenCallRealMethod()
 
         assert dummy.return_args('bar') == (('bar',), {})
         assert dummy.return_args('box') == (('box',), {})
         assert dummy.return_args('foo') == 'fox'
+        assert dummy.return_args('foo') == (('foo',), {})
 
     def testEnsureStubOrder(self):
         dummy = Dummy()

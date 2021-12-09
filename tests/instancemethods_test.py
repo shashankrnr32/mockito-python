@@ -163,10 +163,11 @@ Stubbed invocations are:
 
     def testStubInstancesInsteadOfClasses(self):
         rex = Dog()
-        when(rex).bark('Miau').thenReturn('Wuff')
+        when(rex).bark('Miau').thenReturn('Wuff').thenCallRealMethod()
 
         self.assertEqual('Wuff', rex.bark('Miau'))
-        verify(rex, times=1).bark(ANY)
+        self.assertEqual("Miau!", rex.bark("Miau"))     # Calls the original method
+        verify(rex, times=2).bark(ANY)
 
         max = Dog()
         self.assertEqual('Miau!', max.bark('Miau'))

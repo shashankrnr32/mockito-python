@@ -62,9 +62,11 @@ class ClassMethodsTest(TestBase):
     def testStubs(self):
         self.assertEqual("woof!", Dog.bark())
 
-        when(Dog).bark().thenReturn("miau!")
+        when(Dog).bark().thenReturn("miau!").thenCallRealMethod()
 
         self.assertEqual("miau!", Dog.bark())
+        self.assertEqual("woof!", Dog.bark())
+        self.assertEqual("woof!", Dog.bark())
 
     def testStubsClassesDerivedFromTheObjectClass(self):
         self.assertEqual("Rrrrr!", Lion.roar())

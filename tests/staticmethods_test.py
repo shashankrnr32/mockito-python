@@ -72,9 +72,11 @@ class StaticMethodsTest(TestBase):
     def testStubsWithArgs(self):
         self.assertEqual("woof woof", Dog.barkHardly(1, 2))
 
-        when(Dog).barkHardly(1, 2).thenReturn("miau")
+        when(Dog).barkHardly(1, 2).thenReturn("miau").thenCallRealMethod()
 
         self.assertEqual("miau", Dog.barkHardly(1, 2))
+        self.assertEqual("woof woof", Dog.barkHardly(1, 2))
+        self.assertEqual("woof woof", Dog.barkHardly(1, 2))
 
     def testStubsButDoesNotMachArguments(self):
         self.assertEqual("woof woof", Dog.barkHardly(1, "anything"))

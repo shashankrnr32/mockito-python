@@ -36,8 +36,10 @@ class ModuleFunctionsTest(TestBase):
         self.assertEqual(False, os.path.exists("test"))
 
     def testStubs(self):
-        when(os.path).exists("test").thenReturn(True)
+        when(os.path).exists("test").thenReturn(True).thenCallRealMethod().thenReturn(True)
 
+        self.assertEqual(True, os.path.exists("test"))
+        self.assertEqual(False, os.path.exists("test"))
         self.assertEqual(True, os.path.exists("test"))
 
     def testStubsConsecutiveCalls(self):

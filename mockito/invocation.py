@@ -407,6 +407,16 @@ class AnswerSelector(object):
             self.__then(callable)
         return self
 
+    def thenCallRealMethod(self):
+        stubbed_method, was_in_spec = self.invocation.mock.get_original_method(
+            self.invocation.method_name)
+        try:
+            self.__then(stubbed_method.__wrapped__)
+        except AttributeError:
+            # Change this Error!
+            raise AttributeError("No original method available to call")
+        return self
+
     def __then(self, answer):
         self.invocation.add_answer(answer)
 

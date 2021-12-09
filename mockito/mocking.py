@@ -131,9 +131,11 @@ class Mock(object):
             )
 
         if isinstance(original_method, staticmethod):
-            new_mocked_method = staticmethod(new_mocked_method)  # type: ignore[assignment]  # noqa: E501
+            new_mocked_method = staticmethod(new_mocked_method)     # type: ignore[assignment]  # noqa: E501
+            new_mocked_method.__wrapped__ = original_method.__func__
         elif isinstance(original_method, classmethod):
             new_mocked_method = classmethod(new_mocked_method)  # type: ignore[assignment]  # noqa: E501
+            new_mocked_method.__wrapped__ = functools.partial(original_method.__func__, self.mocked_obj)
         elif (
             inspect.isclass(self.mocked_obj)
             and inspect.isclass(original_method)  # TBC: Inner classes
